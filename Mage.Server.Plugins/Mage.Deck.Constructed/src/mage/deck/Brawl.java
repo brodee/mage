@@ -1,14 +1,15 @@
 package mage.deck;
 
-import java.util.*;
 import mage.abilities.common.CanBeYourCommanderAbility;
 import mage.cards.Card;
 import mage.cards.decks.Constructed;
 import mage.cards.decks.Deck;
 import mage.filter.FilterMana;
+import mage.util.ManaUtil;
+
+import java.util.*;
 
 /**
- *
  * @author spjspj
  */
 public class Brawl extends Constructed {
@@ -31,12 +32,17 @@ public class Brawl extends Constructed {
     }
 
     @Override
+    public int getSideboardMinSize() {
+        return 1;
+    }
+
+    @Override
     public boolean validate(Deck deck) {
         boolean valid = true;
         FilterMana colorIdentity = new FilterMana();
 
-        if (deck.getCards().size() + deck.getSideboard().size() != 60) {
-            invalid.put("Deck", "Must contain 60 cards: has " + (deck.getCards().size() + deck.getSideboard().size()) + " cards");
+        if (deck.getCards().size() + deck.getSideboard().size() != getDeckMinSize()) {
+            invalid.put("Deck", "Must contain " + getDeckMinSize() + " cards: has " + (deck.getCards().size() + deck.getSideboard().size()) + " cards");
             valid = false;
         }
 
@@ -73,25 +79,7 @@ public class Brawl extends Constructed {
                     invalid.put("Brawl", "Invalid Commander (" + commander.getName() + ')');
                     valid = false;
                 }
-                FilterMana commanderColor = commander.getColorIdentity();
-                if (commanderColor.isWhite()) {
-                    colorIdentity.setWhite(true);
-                }
-                if (commanderColor.isBlue()) {
-                    colorIdentity.setBlue(true);
-                }
-                if (commanderColor.isBlack()) {
-                    colorIdentity.setBlack(true);
-                }
-                if (commanderColor.isRed()) {
-                    colorIdentity.setRed(true);
-                }
-                if (commanderColor.isGreen()) {
-                    colorIdentity.setGreen(true);
-                }
-                if (commanderColor.isColorless()) {
-                    colorIdentity.setColorless(true);
-                }
+                ManaUtil.collectColorIdentity(colorIdentity, commander.getColorIdentity());
             }
         }
         Set<String> basicsInDeck = new HashSet<>();
@@ -103,7 +91,7 @@ public class Brawl extends Constructed {
             }
         }
         for (Card card : deck.getCards()) {
-            if (!cardHasValidColor(colorIdentity, card)
+            if (!ManaUtil.isColorIdentityCompatible(colorIdentity, card.getColorIdentity())
                     && !(colorIdentity.isColorless()
                     && basicsInDeck.size() == 1
                     && basicsInDeck.contains(card.getName()))) {
@@ -128,15 +116,6 @@ public class Brawl extends Constructed {
             }
         }
         return valid;
-    }
-
-    public boolean cardHasValidColor(FilterMana commander, Card card) {
-        FilterMana cardColor = card.getColorIdentity();
-        return !(cardColor.isBlack() && !commander.isBlack()
-                || cardColor.isBlue() && !commander.isBlue()
-                || cardColor.isGreen() && !commander.isGreen()
-                || cardColor.isRed() && !commander.isRed()
-                || cardColor.isWhite() && !commander.isWhite());
     }
 
 }

@@ -54,11 +54,13 @@ public final class Legends extends ExpansionSet {
         cards.add(new SetCardInfo("Bartel Runeaxe", 222, Rarity.RARE, mage.cards.b.BartelRuneaxe.class));
         cards.add(new SetCardInfo("Beasts of Bogardan", 133, Rarity.UNCOMMON, mage.cards.b.BeastsOfBogardan.class));
         cards.add(new SetCardInfo("Black Mana Battery", 274, Rarity.UNCOMMON, mage.cards.b.BlackManaBattery.class));
+        cards.add(new SetCardInfo("Blazing Effigy", 134, Rarity.COMMON, mage.cards.b.BlazingEffigy.class));
         cards.add(new SetCardInfo("Blight", 89, Rarity.UNCOMMON, mage.cards.b.Blight.class));
         cards.add(new SetCardInfo("Blood Lust", 135, Rarity.UNCOMMON, mage.cards.b.BloodLust.class));
         cards.add(new SetCardInfo("Blue Mana Battery", 275, Rarity.UNCOMMON, mage.cards.b.BlueManaBattery.class));
         cards.add(new SetCardInfo("Boomerang", 48, Rarity.COMMON, mage.cards.b.Boomerang.class));
         cards.add(new SetCardInfo("Boris Devilboon", 223, Rarity.RARE, mage.cards.b.BorisDevilboon.class));
+        cards.add(new SetCardInfo("Brine Hag", 49, Rarity.UNCOMMON, mage.cards.b.BrineHag.class));
         cards.add(new SetCardInfo("Bronze Horse", 276, Rarity.RARE, mage.cards.b.BronzeHorse.class));
         cards.add(new SetCardInfo("Carrion Ants", 90, Rarity.RARE, mage.cards.c.CarrionAnts.class));
         cards.add(new SetCardInfo("Cat Warriors", 177, Rarity.COMMON, mage.cards.c.CatWarriors.class));
@@ -119,6 +121,7 @@ public final class Legends extends ExpansionSet {
         cards.add(new SetCardInfo("Giant Slug", 99, Rarity.COMMON, mage.cards.g.GiantSlug.class));
         cards.add(new SetCardInfo("Giant Strength", 149, Rarity.COMMON, mage.cards.g.GiantStrength.class));
         cards.add(new SetCardInfo("Giant Turtle", 188, Rarity.COMMON, mage.cards.g.GiantTurtle.class));
+        cards.add(new SetCardInfo("Glyph of Delusion", 60, Rarity.COMMON, mage.cards.g.GlyphOfDelusion.class));
         cards.add(new SetCardInfo("Glyph of Destruction", 150, Rarity.COMMON, mage.cards.g.GlyphOfDestruction.class));
         cards.add(new SetCardInfo("Glyph of Doom", 100, Rarity.COMMON, mage.cards.g.GlyphOfDoom.class));
         cards.add(new SetCardInfo("Glyph of Life", 15, Rarity.COMMON, mage.cards.g.GlyphOfLife.class));
@@ -145,11 +148,13 @@ public final class Legends extends ExpansionSet {
         cards.add(new SetCardInfo("Horror of Horrors", 106, Rarity.UNCOMMON, mage.cards.h.HorrorOfHorrors.class));
         cards.add(new SetCardInfo("Hunding Gjornersen", 231, Rarity.UNCOMMON, mage.cards.h.HundingGjornersen.class));
         cards.add(new SetCardInfo("Hyperion Blacksmith", 152, Rarity.UNCOMMON, mage.cards.h.HyperionBlacksmith.class));
+        cards.add(new SetCardInfo("Ichneumon Druid", 191, Rarity.UNCOMMON, mage.cards.i.IchneumonDruid.class));
         cards.add(new SetCardInfo("Immolation", 153, Rarity.COMMON, mage.cards.i.Immolation.class));
         cards.add(new SetCardInfo("Imprison", 107, Rarity.RARE, mage.cards.i.Imprison.class));
         cards.add(new SetCardInfo("In the Eye of Chaos", 61, Rarity.RARE, mage.cards.i.InTheEyeOfChaos.class));
         cards.add(new SetCardInfo("Indestructible Aura", 21, Rarity.COMMON, mage.cards.i.IndestructibleAura.class));
         cards.add(new SetCardInfo("Infernal Medusa", 108, Rarity.UNCOMMON, mage.cards.i.InfernalMedusa.class));
+        cards.add(new SetCardInfo("Infinite Authority", 22, Rarity.RARE, mage.cards.i.InfiniteAuthority.class));
         cards.add(new SetCardInfo("Invoke Prejudice", 62, Rarity.RARE, mage.cards.i.InvokePrejudice.class));
         cards.add(new SetCardInfo("Ivory Guardians", 23, Rarity.UNCOMMON, mage.cards.i.IvoryGuardians.class));
         cards.add(new SetCardInfo("Jacques le Vert", 232, Rarity.RARE, mage.cards.j.JacquesLeVert.class));
@@ -165,6 +170,7 @@ public final class Legends extends ExpansionSet {
         cards.add(new SetCardInfo("Kei Takahashi", 238, Rarity.RARE, mage.cards.k.KeiTakahashi.class));
         cards.add(new SetCardInfo("Killer Bees", 192, Rarity.RARE, mage.cards.k.KillerBees.class));
         cards.add(new SetCardInfo("Kismet", 25, Rarity.UNCOMMON, mage.cards.k.Kismet.class));
+        cards.add(new SetCardInfo("Knowledge Vault", 281, Rarity.RARE, mage.cards.k.KnowledgeVault.class));
         cards.add(new SetCardInfo("Kobold Drill Sergeant", 154, Rarity.UNCOMMON, mage.cards.k.KoboldDrillSergeant.class));
         cards.add(new SetCardInfo("Kobold Overlord", 155, Rarity.RARE, mage.cards.k.KoboldOverlord.class));
         cards.add(new SetCardInfo("Kobold Taskmaster", 156, Rarity.UNCOMMON, mage.cards.k.KoboldTaskmaster.class));
@@ -178,6 +184,7 @@ public final class Legends extends ExpansionSet {
         cards.add(new SetCardInfo("Land's Edge", 158, Rarity.RARE, mage.cards.l.LandsEdge.class));
         cards.add(new SetCardInfo("Lesser Werewolf", 110, Rarity.UNCOMMON, mage.cards.l.LesserWerewolf.class));
         cards.add(new SetCardInfo("Life Chisel", 283, Rarity.UNCOMMON, mage.cards.l.LifeChisel.class));
+        cards.add(new SetCardInfo("Life Matrix", 284, Rarity.RARE, mage.cards.l.LifeMatrix.class));
         cards.add(new SetCardInfo("Lifeblood", 27, Rarity.RARE, mage.cards.l.Lifeblood.class));
         cards.add(new SetCardInfo("Living Plane", 193, Rarity.RARE, mage.cards.l.LivingPlane.class));
         cards.add(new SetCardInfo("Livonya Silone", 242, Rarity.RARE, mage.cards.l.LivonyaSilone.class));
@@ -294,7 +301,9 @@ public final class Legends extends ExpansionSet {
         cards.add(new SetCardInfo("Urborg", 310, Rarity.UNCOMMON, mage.cards.u.Urborg.class));
         cards.add(new SetCardInfo("Vaevictis Asmadi", 269, Rarity.RARE, mage.cards.v.VaevictisAsmadi.class));
         cards.add(new SetCardInfo("Vampire Bats", 125, Rarity.COMMON, mage.cards.v.VampireBats.class));
+        cards.add(new SetCardInfo("Venarian Gold", 83, Rarity.COMMON, mage.cards.v.VenarianGold.class));
         cards.add(new SetCardInfo("Visions", 41, Rarity.UNCOMMON, mage.cards.v.Visions.class));
+        cards.add(new SetCardInfo("Voodoo Doll", 298, Rarity.RARE, mage.cards.v.VoodooDoll.class));
         cards.add(new SetCardInfo("Walking Dead", 126, Rarity.COMMON, mage.cards.w.WalkingDead.class));
         cards.add(new SetCardInfo("Wall of Caltrops", 42, Rarity.COMMON, mage.cards.w.WallOfCaltrops.class));
         cards.add(new SetCardInfo("Wall of Dust", 168, Rarity.UNCOMMON, mage.cards.w.WallOfDust.class));
@@ -303,6 +312,7 @@ public final class Legends extends ExpansionSet {
         cards.add(new SetCardInfo("Wall of Light", 43, Rarity.UNCOMMON, mage.cards.w.WallOfLight.class));
         cards.add(new SetCardInfo("Wall of Opposition", 171, Rarity.RARE, mage.cards.w.WallOfOpposition.class));
         cards.add(new SetCardInfo("Wall of Putrid Flesh", 127, Rarity.UNCOMMON, mage.cards.w.WallOfPutridFlesh.class));
+        cards.add(new SetCardInfo("Wall of Shadows", 128, Rarity.COMMON, mage.cards.w.WallOfShadows.class));
         cards.add(new SetCardInfo("Wall of Tombstones", 129, Rarity.UNCOMMON, mage.cards.w.WallOfTombstones.class));
         cards.add(new SetCardInfo("Wall of Vapor", 84, Rarity.COMMON, mage.cards.w.WallOfVapor.class));
         cards.add(new SetCardInfo("Wall of Wonder", 85, Rarity.UNCOMMON, mage.cards.w.WallOfWonder.class));

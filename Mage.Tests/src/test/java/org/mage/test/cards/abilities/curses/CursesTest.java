@@ -196,7 +196,7 @@ public class CursesTest extends CardTestPlayerBase {
         addCard(Zone.HAND, playerA, "Curse of Bloodletting");
 
         castSpell(1, PhaseStep.PRECOMBAT_MAIN, playerA, "Curse of Bloodletting", playerB);
-        castSpell(1, PhaseStep.PRECOMBAT_MAIN, playerA, "Curse of Thirst", playerB);
+        castSpell(1, PhaseStep.POSTCOMBAT_MAIN, playerA, "Curse of Thirst", playerB);
 
         setStopAt(2, PhaseStep.DRAW);
         execute();
@@ -284,9 +284,9 @@ public class CursesTest extends CardTestPlayerBase {
         
         // {2}{G/U}{G/U}: Put the top two cards of your library into your graveyard, then return a nonland card of an opponent's choice from your graveyard to your hand.
         activateAbility(3, PhaseStep.PRECOMBAT_MAIN, playerA, "{2}{G/U}{G/U}: Put the top two cards");
-        castSpell(3, PhaseStep.PRECOMBAT_MAIN, playerA, "Curse of Death's Hold", playerB);
+        castSpell(3, PhaseStep.POSTCOMBAT_MAIN, playerA, "Curse of Death's Hold", playerB);
                
-        setStopAt(3, PhaseStep.END_COMBAT);
+        setStopAt(3, PhaseStep.END_TURN);
         execute();
 
         assertLife(playerA, 20);
@@ -426,7 +426,7 @@ public class CursesTest extends CardTestPlayerBase {
     }
 
     /*
-     * Reported bug issue #3326 (NOTE test is failing due to bug in code)
+     * Reported bug issue #3326
      * When {Witchbane Orb} triggers when entering the field and there IS a curse attached to you, an error message (I sadly skipped) appears and your turn is reset.
         This happened to me in a 4-player Commander game with {Curse of the Shallow Graves} on the field.
      */

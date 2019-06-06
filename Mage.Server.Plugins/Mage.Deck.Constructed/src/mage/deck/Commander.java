@@ -12,6 +12,7 @@ import mage.cards.Sets;
 import mage.cards.decks.Constructed;
 import mage.cards.decks.Deck;
 import mage.filter.FilterMana;
+import mage.util.ManaUtil;
 
 import java.util.*;
 
@@ -26,7 +27,7 @@ public class Commander extends Constructed {
     public Commander() {
         this("Commander");
         for (ExpansionSet set : Sets.getInstance().values()) {
-            if (set.isEternalLegal()) {
+            if (set.getSetType().isEternalLegal()) {
                 setCodes.add(set.getCode());
             }
         }
@@ -75,12 +76,22 @@ public class Commander extends Constructed {
     }
 
     @Override
+    public int getDeckMinSize() {
+        return 98;
+    }
+
+    @Override
+    public int getSideboardMinSize() {
+        return 1;
+    }
+
+    @Override
     public boolean validate(Deck deck) {
         boolean valid = true;
         FilterMana colorIdentity = new FilterMana();
 
         if (deck.getCards().size() + deck.getSideboard().size() != 100) {
-            invalid.put("Deck", "Must contain 100 cards: has " + (deck.getCards().size() + deck.getSideboard().size()) + " cards");
+            invalid.put("Deck", "Must contain " + 100 + " cards: has " + (deck.getCards().size() + deck.getSideboard().size()) + " cards");
             valid = false;
         }
 
@@ -138,26 +149,17 @@ public class Commander extends Constructed {
                         valid = false;
                     }
                 }
-                FilterMana commanderColor = commander.getColorIdentity();
-                if (commanderColor.isWhite()) {
-                    colorIdentity.setWhite(true);
-                }
-                if (commanderColor.isBlue()) {
-                    colorIdentity.setBlue(true);
-                }
-                if (commanderColor.isBlack()) {
-                    colorIdentity.setBlack(true);
-                }
-                if (commanderColor.isRed()) {
-                    colorIdentity.setRed(true);
-                }
-                if (commanderColor.isGreen()) {
-                    colorIdentity.setGreen(true);
-                }
+                ManaUtil.collectColorIdentity(colorIdentity, commander.getColorIdentity());
             }
         }
+
+        // no needs in cards check on wrong commanders
+        if (!valid) {
+            return false;
+        }
+
         for (Card card : deck.getCards()) {
-            if (!cardHasValidColor(colorIdentity, card)) {
+            if (!ManaUtil.isColorIdentityCompatible(colorIdentity, card.getColorIdentity())) {
                 invalid.put(card.getName(), "Invalid color (" + colorIdentity.toString() + ')');
                 valid = false;
             }
@@ -179,15 +181,6 @@ public class Commander extends Constructed {
             }
         }
         return valid;
-    }
-
-    public boolean cardHasValidColor(FilterMana commander, Card card) {
-        FilterMana cardColor = card.getColorIdentity();
-        return !(cardColor.isBlack() && !commander.isBlack()
-                || cardColor.isBlue() && !commander.isBlue()
-                || cardColor.isGreen() && !commander.isGreen()
-                || cardColor.isRed() && !commander.isRed()
-                || cardColor.isWhite() && !commander.isWhite());
     }
 
     @Override
@@ -631,7 +624,7 @@ public class Commander extends Constructed {
                     || cn.equals("krark-clan ironworks") || cn.equals("krenko, mob boss")
                     || cn.equals("krosan restorer") || cn.equals("laboratory maniac")
                     || cn.equals("leonin relic-warder") || cn.equals("leyline of the void")
-                    || cn.equals("memnarch") || cn.equals("memnarch")
+                    || cn.equals("memnarch")
                     || cn.equals("meren of clan nel toth") || cn.equals("mikaeus, the unhallowed")
                     || cn.equals("mindcrank") || cn.equals("mindslaver")
                     || cn.equals("minion reflector") || cn.equals("mycosynth lattice")
@@ -649,7 +642,7 @@ public class Commander extends Constructed {
                     || cn.equals("sunder")
                     || cn.equals("storm cauldron") || cn.equals("teferi's puzzle box")
                     || cn.equals("tangle wire")
-                    || cn.equals("teferi, mage of zhalfir") || cn.equals("teferi, mage of zhalfir")
+                    || cn.equals("teferi, mage of zhalfir")
                     || cn.equals("tezzeret the seeker") || cn.equals("time stretch")
                     || cn.equals("time warp") || cn.equals("training grounds")
                     || cn.equals("triskelavus") || cn.equals("triskelion")
@@ -743,7 +736,7 @@ public class Commander extends Constructed {
         }
 
         edhPowerLevel += numberInfinitePieces * 12;
-        edhPowerLevel = (int) Math.round(edhPowerLevel / 10);
+        edhPowerLevel = Math.round(edhPowerLevel / 10);
         if (edhPowerLevel >= 100) {
             edhPowerLevel = 99;
         }

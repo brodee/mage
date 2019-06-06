@@ -583,22 +583,22 @@ public class PlayerStub implements Player {
     }
 
     @Override
-    public boolean searchLibrary(TargetCardInLibrary target, Game game) {
+    public boolean searchLibrary(TargetCardInLibrary target, Ability source, Game game) {
         return false;
     }
 
     @Override
-    public boolean searchLibrary(TargetCardInLibrary target, Game game, boolean triggerEvents) {
+    public boolean searchLibrary(TargetCardInLibrary target, Ability source, Game game, boolean triggerEvents) {
         return false;
     }
 
     @Override
-    public boolean searchLibrary(TargetCardInLibrary target, Game game, UUID targetPlayerId) {
+    public boolean searchLibrary(TargetCardInLibrary target, Ability source, Game game, UUID targetPlayerId) {
         return false;
     }
 
     @Override
-    public boolean searchLibrary(TargetCardInLibrary target, Game game, UUID targetPlayerId, boolean triggerEvents) {
+    public boolean searchLibrary(TargetCardInLibrary target, Ability source, Game game, UUID targetPlayerId, boolean triggerEvents) {
         return false;
     }
 
@@ -1092,7 +1092,7 @@ public class PlayerStub implements Player {
     }
 
     @Override
-    public boolean lookAtFaceDownCard(Card card, Game game) {
+    public boolean lookAtFaceDownCard(Card card, Game game, int abilitiesToActivate) {
         return false;
     }
 
@@ -1242,8 +1242,13 @@ public class PlayerStub implements Player {
     }
 
     @Override
-    public boolean isRequestToShowHandCardsAllowed() {
+    public boolean isPlayerAllowedToRequestHand(UUID gameId, UUID requesterPlayerId) {
         return false;
+    }
+
+    @Override
+    public void addPlayerToRequestedHandList(UUID gameId, UUID requesterPlayerId) {
+        //
     }
 
     @Override

@@ -34,6 +34,10 @@ public abstract class DeckImporter {
       return new CodDeckImporter();
     } else if (file.toLowerCase(Locale.ENGLISH).endsWith("o8d")) {
       return new O8dDeckImporter();
+    } else if (file.toLowerCase(Locale.ENGLISH).endsWith("draft")) {
+      return new DraftLogImporter();
+    } else if (file.toLowerCase(Locale.ENGLISH).endsWith("mtga")) {
+      return new MtgaImporter();
     } else {
       return null;
     }

@@ -1,7 +1,5 @@
-
 package mage.deck;
 
-import java.util.*;
 import mage.abilities.Ability;
 import mage.abilities.keyword.PartnerAbility;
 import mage.abilities.keyword.PartnerWithAbility;
@@ -11,9 +9,11 @@ import mage.cards.Sets;
 import mage.cards.decks.Constructed;
 import mage.cards.decks.Deck;
 import mage.filter.FilterMana;
+import mage.util.ManaUtil;
+
+import java.util.*;
 
 /**
- *
  * @author spjspj
  */
 public class FreeformCommander extends Constructed {
@@ -36,12 +36,22 @@ public class FreeformCommander extends Constructed {
     }
 
     @Override
+    public int getDeckMinSize() {
+        return 98;
+    }
+
+    @Override
+    public int getSideboardMinSize() {
+        return 1;
+    }
+
+    @Override
     public boolean validate(Deck deck) {
         boolean valid = true;
         FilterMana colorIdentity = new FilterMana();
 
         if (deck.getCards().size() + deck.getSideboard().size() != 100) {
-            invalid.put("Deck", "Must contain 100 cards: has " + (deck.getCards().size() + deck.getSideboard().size()) + " cards");
+            invalid.put("Deck", "Must contain " + 100 + " cards: has " + (deck.getCards().size() + deck.getSideboard().size()) + " cards");
             valid = false;
         }
 
@@ -51,14 +61,12 @@ public class FreeformCommander extends Constructed {
 
         for (Map.Entry<String, Integer> entry : counts.entrySet()) {
             if (entry.getValue() > 1) {
-                if (!basicLandNames.contains(entry.getKey())) {
+                if (!basicLandNames.contains(entry.getKey()) && !anyNumberCardsAllowed.contains(entry.getKey())) {
                     invalid.put(entry.getKey(), "Too many: " + entry.getValue());
                     valid = false;
                 }
             }
         }
-
-        generateFreeformHash();
 
         if (deck.getSideboard().size() < 1 || deck.getSideboard().size() > 2) {
             invalid.put("Commander", "Sideboard must contain only the commander(s)");
@@ -88,27 +96,17 @@ public class FreeformCommander extends Constructed {
                         valid = false;
                     }
                 }
-                FilterMana commanderColor = commander.getColorIdentity();
-                if (commanderColor.isWhite()) {
-                    colorIdentity.setWhite(true);
-                }
-                if (commanderColor.isBlue()) {
-                    colorIdentity.setBlue(true);
-                }
-                if (commanderColor.isBlack()) {
-                    colorIdentity.setBlack(true);
-                }
-                if (commanderColor.isRed()) {
-                    colorIdentity.setRed(true);
-                }
-                if (commanderColor.isGreen()) {
-                    colorIdentity.setGreen(true);
-                }
+                ManaUtil.collectColorIdentity(colorIdentity, commander.getColorIdentity());
             }
         }
 
+        // no needs in cards check on wrong commanders
+        if (!valid) {
+            return false;
+        }
+
         for (Card card : deck.getCards()) {
-            if (!cardHasValidColor(colorIdentity, card)) {
+            if (!ManaUtil.isColorIdentityCompatible(colorIdentity, card.getColorIdentity())) {
                 invalid.put(card.getName(), "Invalid color (" + colorIdentity.toString() + ')');
                 valid = false;
             }
@@ -123,18 +121,5 @@ public class FreeformCommander extends Constructed {
             }
         }
         return valid;
-    }
-
-    public boolean cardHasValidColor(FilterMana commander, Card card) {
-        FilterMana cardColor = card.getColorIdentity();
-        return !(cardColor.isBlack() && !commander.isBlack()
-                || cardColor.isBlue() && !commander.isBlue()
-                || cardColor.isGreen() && !commander.isGreen()
-                || cardColor.isRed() && !commander.isRed()
-                || cardColor.isWhite() && !commander.isWhite());
-    }
-
-    public void generateFreeformHash() {
-        return;
     }
 }

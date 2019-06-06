@@ -3,6 +3,7 @@ package mage.cards.k;
 import mage.abilities.Ability;
 import mage.abilities.effects.OneShotEffect;
 import mage.abilities.effects.common.GainLifeEffect;
+import mage.abilities.hint.common.CreaturesYouControlHint;
 import mage.cards.CardImpl;
 import mage.cards.CardSetInfo;
 import mage.constants.CardType;
@@ -23,6 +24,7 @@ public final class KayasWrath extends CardImpl {
 
         // Destroy all creatures. You gain life equal to the number of creatures you controlled that were destroyed this way.
         this.getSpellAbility().addEffect(new KayasWrathEffect());
+        this.getSpellAbility().addHint(CreaturesYouControlHint.instance);
     }
 
     private KayasWrath(final KayasWrath card) {
@@ -59,9 +61,11 @@ class KayasWrathEffect extends OneShotEffect {
                 StaticFilters.FILTER_PERMANENT_CREATURE,
                 source.getControllerId(), source.getSourceId(), game
         )) {
-            boolean isMine = permanent != null && permanent.isControlledBy(source.getControllerId());
-            if (permanent.destroy(source.getSourceId(), game, false) && isMine) {
-                counter++;
+            if (permanent != null) {
+                boolean isMine = permanent.isControlledBy(source.getControllerId());
+                if (permanent.destroy(source.getSourceId(), game, false) && isMine) {
+                    counter++;
+                }
             }
         }
         return new GainLifeEffect(counter).apply(game, source);

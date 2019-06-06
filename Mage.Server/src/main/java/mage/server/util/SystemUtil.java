@@ -12,6 +12,7 @@ import mage.constants.Outcome;
 import mage.constants.Zone;
 import mage.counters.CounterType;
 import mage.game.Game;
+import mage.game.GameCommanderImpl;
 import mage.game.permanent.Permanent;
 import mage.players.Player;
 import mage.util.RandomUtil;
@@ -30,6 +31,9 @@ import java.util.stream.Collectors;
  * @author JayDi85
  */
 public final class SystemUtil {
+
+    private SystemUtil() {
+    }
 
     public static final DateFormat dateFormat = new SimpleDateFormat("yy-M-dd HH:mm:ss");
 
@@ -120,7 +124,7 @@ public final class SystemUtil {
             String cardInfo = card.getName() + " - " + card.getExpansionSetCode();
 
             // optional info
-            ArrayList<String> resInfo = new ArrayList<>();
+            List<String> resInfo = new ArrayList<>();
             for (String param : commandParams) {
                 switch (param) {
                     case PARAM_COLOR_COST:
@@ -147,7 +151,7 @@ public final class SystemUtil {
                 }
             }
 
-            if (resInfo.size() > 0) {
+            if (!resInfo.isEmpty()) {
                 cardInfo += ": " + resInfo.stream().collect(Collectors.joining("; "));
             }
 
@@ -443,6 +447,29 @@ public final class SystemUtil {
                         }
                     }
                     continue;
+                } else if ("stack".equalsIgnoreCase(command.zone)) {
+                    // simple cast (without targets or modes)
+
+                    // find card info
+                    CardInfo cardInfo = CardRepository.instance.findCard(command.cardName);
+                    if (cardInfo == null) {
+                        logger.warn("Unknown card for stack command [" + command.cardName + "]: " + line);
+                        continue;
+                    }
+
+                    // put card to game
+                    Set<Card> cardsToLoad = new HashSet<>();
+                    for (int i = 0; i < command.Amount; i++) {
+                        cardsToLoad.add(cardInfo.getCard());
+                    }
+                    game.loadCards(cardsToLoad, player.getId());
+
+                    // move card from exile to stack
+                    for (Card card : cardsToLoad) {
+                        swapWithAnyCard(game, player, card, Zone.STACK);
+                    }
+
+                    continue;
                 }
 
                 Zone gameZone;
@@ -459,6 +486,8 @@ public final class SystemUtil {
                 } else if ("emblem".equalsIgnoreCase(command.zone)) {
                     gameZone = Zone.COMMAND;
                 } else if ("plane".equalsIgnoreCase(command.zone)) {
+                    gameZone = Zone.COMMAND;
+                } else if ("commander".equalsIgnoreCase(command.zone)) {
                     gameZone = Zone.COMMAND;
                 } else {
                     logger.warn("Unknown zone [" + command.zone + "]: " + line);
@@ -488,8 +517,21 @@ public final class SystemUtil {
                     }
                 }
                 game.loadCards(cardsToLoad, player.getId());
-                for (Card card : cardsToLoad) {
-                    swapWithAnyCard(game, player, card, gameZone);
+
+                if ("commander".equalsIgnoreCase(command.zone) && cardsToLoad.size() > 0) {
+                    // as commander (only commander games, look at init code in GameCommanderImpl)
+                    if (game instanceof GameCommanderImpl) {
+                        GameCommanderImpl gameCommander = (GameCommanderImpl) game;
+                        cardsToLoad.forEach(card -> gameCommander.addCommander(card, player));
+                        cardsToLoad.forEach(card -> gameCommander.initCommander(card, player));
+                    } else {
+                        logger.fatal("Commander card can be used in commander game only: " + command.cardName);
+                    }
+                } else {
+                    // as other card
+                    for (Card card : cardsToLoad) {
+                        swapWithAnyCard(game, player, card, gameZone);
+                    }
                 }
             }
         } catch (Exception e) {
@@ -516,6 +558,8 @@ public final class SystemUtil {
                 game.getExile().getPermanentExile().remove(card);
                 player.getLibrary().putOnTop(card, game);
                 break;
+            case STACK:
+                card.cast(game, Zone.EXILED, card.getSpellAbility(), player.getId());
             default:
                 card.moveToZone(zone, null, game, false);
         }
@@ -530,12 +574,9 @@ public final class SystemUtil {
      * @return
      */
     private static Optional<Player> findPlayer(Game game, String name) {
-        for (Player player : game.getPlayers().values()) {
-            if (player.getName().equals(name)) {
-                return Optional.of(player);
-            }
-        }
-        return Optional.empty();
+        return game.getPlayers().values().stream()
+                .filter(player -> player.getName().equals(name)).findFirst();
+
     }
 
     public static String sanitize(String input) {

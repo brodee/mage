@@ -2,15 +2,16 @@ package mage.server;
 
 import mage.cards.ExpansionSet;
 import mage.cards.Sets;
+import mage.cards.decks.DeckValidatorFactory;
 import mage.cards.repository.CardScanner;
 import mage.cards.repository.PluginClassloaderRegistery;
 import mage.cards.repository.RepositoryUtil;
+import mage.game.draft.RateCard;
 import mage.game.match.MatchType;
 import mage.game.tournament.TournamentType;
 import mage.interfaces.MageServer;
 import mage.remote.Connection;
 import mage.server.draft.CubeFactory;
-import mage.server.game.DeckValidatorFactory;
 import mage.server.game.GameFactory;
 import mage.server.game.PlayerFactory;
 import mage.server.record.UserStatsRepository;
@@ -56,9 +57,9 @@ public final class Main {
     private static final File extensionFolder = new File("extensions");
 
     public static final PluginClassLoader classLoader = new PluginClassLoader();
-    public static TransporterServer server;
-    protected static boolean testMode;
-    protected static boolean fastDbMode;
+    private static TransporterServer server;
+    private static boolean testMode;
+    private static boolean fastDbMode;
 
     /**
      * @param args the command line arguments
@@ -134,6 +135,12 @@ public final class Main {
             CardScanner.scan();
         }
         logger.info("Done.");
+
+        // cards preload with ratings
+        if (RateCard.PRELOAD_CARD_RATINGS_ON_STARTUP) {
+            RateCard.bootstrapCardsAndRatings();
+            logger.info("Done.");
+        }
 
         logger.info("Updating user stats DB...");
         UserStatsRepository.instance.updateUserStats();
@@ -418,8 +425,10 @@ public final class Main {
         File[] files = directory.listFiles(
                 (dir, name) -> name.endsWith(".game")
         );
-        for (File file : files) {
-            file.delete();
+        if (files != null) {
+            for (File file : files) {
+                file.delete();
+            }
         }
     }
 

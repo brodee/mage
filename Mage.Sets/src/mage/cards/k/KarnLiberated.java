@@ -109,8 +109,9 @@ class KarnLiberatedEffect extends OneShotEffect {
                     if (card.isOwnedBy(player.getId()) && !card.isCopy() // no copies
                             && !player.getSideboard().contains(card.getId())
                             && !cards.contains(card)) { // not the exiled cards
-                        if (player.getCommandersIds().contains(card.getId())) {
-                            game.addCommander(new Commander(card));
+                        if (game.getCommandersIds(player).contains(card.getId())) {
+                            game.addCommander(new Commander(card)); // TODO: check restart and init
+                            // no needs in initCommander call -- it's uses on game startup (init)
                             game.setZone(card.getId(), Zone.COMMAND);
                         } else {
                             player.getLibrary().putOnTop(card, game);
@@ -191,8 +192,7 @@ class KarnLiberatedDelayedEffect extends OneShotEffect {
             if (exile != null) {
                 // Creatures put onto the battlefield due to Karn's ability will have been under their controller's control continuously
                 // since the beginning of the first turn. They can attack and their activated abilities with {T} in the cost can be activated.
-                Cards cards = new CardsImpl(); // needed because putOntoTheBattlefield removes from exile
-                cards.addAll(exile);
+                Cards cards = new CardsImpl(exile); // needed because putOntoTheBattlefield removes from exile
                 if (!cards.isEmpty()) {
                     controller.moveCards(cards, Zone.BATTLEFIELD, source, game);
                     for (Card card : cards.getCards(game)) {

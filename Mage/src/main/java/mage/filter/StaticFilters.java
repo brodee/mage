@@ -85,6 +85,12 @@ public final class StaticFilters {
         FILTER_CARD_CREATURE_YOUR_GRAVEYARD.setLockedFilter(true);
     }
 
+    public static final FilterCreatureCard FILTER_CARD_CREATURES_YOUR_GRAVEYARD = new FilterCreatureCard("creature cards from your graveyard");
+
+    static {
+        FILTER_CARD_CREATURES_YOUR_GRAVEYARD.setLockedFilter(true);
+    }
+
     public static final FilterCard FILTER_CARD_FROM_YOUR_GRAVEYARD = new FilterCard("card from your graveyard");
 
     static {
@@ -145,7 +151,13 @@ public final class StaticFilters {
         FILTER_PERMANENTS.setLockedFilter(true);
     }
 
-    public static final FilterPermanent FILTER_PERMANENT_ARTIFACT_AN = new FilterArtifactPermanent("an artifact");
+    public static final FilterArtifactPermanent FILTER_PERMANENT_ARTIFACT = new FilterArtifactPermanent("artifact");
+
+    static {
+        FILTER_PERMANENT_ARTIFACT.setLockedFilter(true);
+    }
+
+    public static final FilterArtifactPermanent FILTER_PERMANENT_ARTIFACT_AN = new FilterArtifactPermanent("an artifact");
 
     static {
         FILTER_PERMANENT_ARTIFACT_AN.setLockedFilter(true);
@@ -405,6 +417,12 @@ public final class StaticFilters {
         FILTER_PERMANENT_PLANESWALKER.setLockedFilter(true);
     }
 
+    public static final FilterPlaneswalkerPermanent FILTER_PERMANENT_PLANESWALKERS = new FilterPlaneswalkerPermanent("planeswalkers");
+
+    static {
+        FILTER_PERMANENT_PLANESWALKERS.setLockedFilter(true);
+    }
+
     public static final FilterNonlandPermanent FILTER_PERMANENT_NON_LAND = new FilterNonlandPermanent();
 
     static {
@@ -446,6 +464,12 @@ public final class StaticFilters {
 
     static {
         FILTER_SPELL_NON_CREATURE.setLockedFilter(true);
+    }
+
+    public static final FilterSpell FILTER_SPELL_A_NON_CREATURE = (FilterSpell) new FilterSpell("a noncreature spell").add(Predicates.not(new CardTypePredicate(CardType.CREATURE)));
+
+    static {
+        FILTER_SPELL_A_NON_CREATURE.setLockedFilter(true);
     }
 
     public static final FilterSpell FILTER_SPELL = new FilterSpell();

@@ -95,7 +95,7 @@ class ConspiracyEffect extends ContinuousEffectImpl {
                 }
             }
             // commander in command zone
-            for (UUID commanderId : controller.getCommandersIds()) {
+            for (UUID commanderId : game.getCommandersIds(controller)) {
                 if (game.getState().getZone(commanderId) == Zone.COMMAND) {
                     Card card = game.getCard(commanderId);
                     if (card != null && card.isCreature()) {
@@ -139,7 +139,7 @@ class ConspiracyEffect extends ContinuousEffectImpl {
 
     private void setChosenSubtype(SubTypeList subtype, SubType choice) {
         if (subtype.size() != 1 || !subtype.contains(choice)) {
-            subtype.removeAll(SubType.getCreatureTypes(false));
+            subtype.clear();
             subtype.add(choice);
         }
     }
